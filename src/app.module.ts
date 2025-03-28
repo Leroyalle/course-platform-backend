@@ -7,6 +7,8 @@ import { EmailModule } from './email/email.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { CourseModule } from './course/course.module';
+import { CourseItemModule } from './course-item/course-item.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
         fallthrough: false,
       },
     }),
+    CourseModule,
+    CourseItemModule,
   ],
   providers: [JwtAuthGuard],
 })
