@@ -5,12 +5,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class CourseItemService {
   constructor(private readonly prisma: PrismaService) {}
   findAll() {
-    return this.prisma.courseItem.findMany({});
+    return this.prisma.lesson.findMany();
   }
 
   findOne(id: string) {
-    return this.prisma.courseItem.findUnique({
+    return this.prisma.lesson.findUnique({
       where: { id },
+      include: {
+        course: true,
+      },
     });
   }
 }
