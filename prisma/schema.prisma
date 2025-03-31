@@ -64,9 +64,8 @@ model Lesson {
 
   userProgress UserProgress[]
 
-  duration  String
-  completed Boolean
-  content   String
+  duration String
+  content  String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

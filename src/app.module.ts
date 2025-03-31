@@ -9,6 +9,7 @@ import { join } from 'path';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { CourseModule } from './course/course.module';
 import { CourseItemModule } from './course-item/course-item.module';
+import { UserProgressModule } from './user-progress/user-progress.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { CourseItemModule } from './course-item/course-item.module';
     }),
     CourseModule,
     CourseItemModule,
+    UserProgressModule,
   ],
   providers: [JwtAuthGuard],
 })
