@@ -16,6 +16,7 @@ export const UserId = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request: AuthenticatedRequest = ctx.switchToHttp().getRequest();
     if (!request.user) {
+      console.log(request.user);
       throw new UnauthorizedException('User is not authenticated');
     }
     return request.user.id;

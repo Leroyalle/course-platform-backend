@@ -13,7 +13,19 @@ export class UserProgressService {
     return completedLessons.map((lesson) => lesson.lessonId);
   }
 
-  update(id: number) {
-    return `This action updates a #${id} userProgress`;
+  public async update(courseId: string, lessonId: string, userId: string) {
+    const progress = await this.prisma.userProgress.findFirst({
+      where: { courseId, lessonId, userId },
+    });
+
+    if (progress) {
+      return await this.prisma.userProgress.delete({
+        where: { id: progress.id },
+      });
+    }
+
+    return await this.prisma.userProgress.create({
+      data: { courseId, lessonId, userId },
+    });
   }
 }
