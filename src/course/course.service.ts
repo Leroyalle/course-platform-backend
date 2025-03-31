@@ -35,21 +35,31 @@ export class CourseService {
   }
 
   public async findOne(id: string, userId?: string) {
+    console.log('userId', userId);
     const course = await this.prisma.course.findUnique({
       where: { id },
       include: {
         lessons: {
           include: {
-            userProgress: {
-              where: {
-                userId: userId,
-              },
-            },
+            userProgress: userId
+              ? {
+                  where: {
+                    userId: userId,
+                  },
+                }
+              : false,
           },
         },
       },
     });
-
+    console.log(
+      'Found userProgress:',
+      JSON.stringify(
+        course?.lessons.map((l) => l.userProgress),
+        null,
+        2,
+      ),
+    );
     if (!course) {
       throw new NotFoundException(`Course with id ${id} not found`);
     }
@@ -58,9 +68,10 @@ export class CourseService {
 
     const enhancedLessons = lessons.map((lesson) => {
       const { userProgress, ...lessonWithoutProgress } = lesson;
+
       return {
         ...lessonWithoutProgress,
-        completed: userProgress.length > 0,
+        completed: userProgress ? userProgress?.length > 0 : false,
       };
     });
 
