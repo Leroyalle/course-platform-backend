@@ -9,11 +9,13 @@ export class CourseService {
       include: {
         lessons: {
           include: {
-            userProgress: {
-              where: {
-                userId: userId,
-              },
-            },
+            userProgress: userId
+              ? {
+                  where: {
+                    userId: userId,
+                  },
+                }
+              : false,
           },
         },
       },
@@ -24,7 +26,7 @@ export class CourseService {
         const { userProgress, ...lessonWithoutProgress } = lesson;
         return {
           ...lessonWithoutProgress,
-          completed: userProgress.length > 0,
+          completed: userProgress ? userProgress?.length > 0 : false,
         };
       });
 

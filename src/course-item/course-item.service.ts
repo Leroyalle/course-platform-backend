@@ -8,12 +8,18 @@ export class CourseItemService {
     return this.prisma.lesson.findMany();
   }
 
-  public async findOne(id: string) {
+  public async findOne(id: string, userId?: string) {
     const findLesson = await this.prisma.lesson.findUnique({
       where: { id },
       include: {
         course: true,
-        userProgress: true,
+        userProgress: userId
+          ? {
+              where: {
+                userId: userId,
+              },
+            }
+          : false,
       },
     });
 
@@ -24,7 +30,7 @@ export class CourseItemService {
     const { userProgress, ...lessonWithoutProgress } = findLesson;
     const enhancedLesson = {
       ...lessonWithoutProgress,
-      completed: userProgress.length > 0,
+      completed: userProgress ? userProgress?.length > 0 : false,
     };
 
     return enhancedLesson;

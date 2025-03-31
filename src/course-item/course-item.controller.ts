@@ -1,6 +1,9 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { CourseItemService } from './course-item.service';
+import { OptionalAuthGuard } from 'src/auth/guards/optional-auth-guard';
+import { UserIdOptional } from 'src/user/decorators/userId-optional.decorator';
 
+@UseGuards(OptionalAuthGuard)
 @Controller('lesson')
 export class CourseItemController {
   constructor(private readonly courseItemService: CourseItemService) {}
@@ -11,7 +14,7 @@ export class CourseItemController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.courseItemService.findOne(id);
+  findOne(@Param('id') id: string, @UserIdOptional() userId?: string) {
+    return this.courseItemService.findOne(id, userId);
   }
 }
